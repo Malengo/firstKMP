@@ -26,10 +26,14 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import firstkmp.composeapp.generated.resources.Res
 import firstkmp.composeapp.generated.resources.firebase
 import kotlinx.coroutines.launch
+import org.example.project.authentication.Repository.AuthResponse
+import org.example.project.authentication.Repository.AuthResponseError
 import org.example.project.authentication.ViewModel.LoginViewModel
+import org.example.project.profile.Profile
 import org.example.project.sharedViewModel.SharedProfileViewModel
 import org.jetbrains.compose.resources.painterResource
 
@@ -44,6 +48,14 @@ fun LoginScreen(
     val scope = rememberCoroutineScope()
     var buttonLoginFormText by remember { mutableStateOf("Login") }
     var textChoiseForm by remember { mutableStateOf("Criar uma nova conta") }
+    val openDialog = remember { mutableStateOf(false) }
+    var messageError by remember { mutableStateOf("") }
+
+    if (openDialog.value) {
+        Dialog(onDismissRequest = { openDialog.value = false }) {
+            Text(messageError)
+        }
+    }
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -76,10 +88,14 @@ fun LoginScreen(
             colors = ButtonDefaults.buttonColors(ColorsDefaults.primaryLight),
             onClick = {
                 scope.launch {
-                    val response = if (formState.isLogin) viewModel.handleLoginFirebase() else viewModel.handlersingUpFireBase()
-                    if (response != null) {
-                        sharedProfileViewModel.addProfile(response)
+                    //val response = if (formState.isLogin) viewModel.handleLoginFirebase() else viewModel.handlersingUpFireBase()
+                    val response = viewModel.handleLoginFirebase()
+                    response.onSuccess { profile ->
+                        sharedProfileViewModel.addProfile(profile)
                         onNavigateToHomeScreen()
+                    }.onFailure { message ->
+                        messageError = message.message.toString()
+                        openDialog.value = true
                     }
                 }
             }

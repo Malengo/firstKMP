@@ -25,7 +25,26 @@ data class UpdateProfileRequest(
     val photoUrl: String?
 )
 
-class FirebaseService() {
+@Serializable
+data class AuthResponseError(
+    val error: ErrorInformation
+)
+
+@Serializable
+data class ErrorInformation(
+    val code: Int,
+    val message: String,
+    val errors: List<ErrorDetail>
+)
+
+@Serializable
+data class ErrorDetail(
+    val message: String,
+    val domain: String,
+    val reason: String
+)
+
+class FirebaseService {
     private val httpClient = HttpClient() {
         install(ContentNegotiation) {
             json(Json {
@@ -49,16 +68,17 @@ class FirebaseService() {
         }
     }
 
-    suspend fun login(email: String, password: String): AuthResponse? {
+    suspend fun login(email: String, password: String): Result<AuthResponse> {
         val response = httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}") {
             contentType(ContentType.Application.Json)
             setBody(AuthRequest(email, password))
         }
 
         return if (response.status.value in 200..299) {
-            response.body<AuthResponse>()
+            Result.success(response.body<AuthResponse>())
         } else {
-            null
+            val responseError = response.body<AuthResponseError>()
+            Result.failure(Exception(responseError.error.message))
         }
     }
 
