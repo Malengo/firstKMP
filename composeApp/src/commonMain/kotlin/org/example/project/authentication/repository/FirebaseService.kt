@@ -1,4 +1,4 @@
-package org.example.project.authentication.Repository
+package org.example.project.authentication.repository
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -10,39 +10,11 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-
-@Serializable
-data class AuthResponse(val displayName: String? = "", val idToken: String, val email: String, val profilePicture: String)
-@Serializable
-data class AuthRequest(val email: String, val password: String)
-@Serializable
-data class UpdateProfileRequest(
-    val displayName: String?,
-    val idToken: String?,
-    val email: String?,
-    val photoUrl: String?
-)
-
-@Serializable
-data class AuthResponseError(
-    val error: ErrorInformation
-)
-
-@Serializable
-data class ErrorInformation(
-    val code: Int,
-    val message: String,
-    val errors: List<ErrorDetail>
-)
-
-@Serializable
-data class ErrorDetail(
-    val message: String,
-    val domain: String,
-    val reason: String
-)
+import org.example.project.authentication.model.AuthRequest
+import org.example.project.authentication.model.AuthResponse
+import org.example.project.authentication.model.AuthResponseError
+import org.example.project.authentication.model.UpdateProfileRequest
 
 class FirebaseService {
     private val httpClient = HttpClient() {
@@ -56,10 +28,11 @@ class FirebaseService {
 
     suspend fun signUp(email: String, password: String): AuthResponse? {
 
-        val responseBody = httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}") {
-            contentType(ContentType.Application.Json)
-            setBody(AuthRequest(email, password))
-        }
+        val responseBody =
+            httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}") {
+                contentType(ContentType.Application.Json)
+                setBody(AuthRequest(email, password))
+            }
 
         return if (responseBody.status.value in 200..299) {
             responseBody.body<AuthResponse>()
@@ -69,10 +42,11 @@ class FirebaseService {
     }
 
     suspend fun login(email: String, password: String): Result<AuthResponse> {
-        val response = httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}") {
-            contentType(ContentType.Application.Json)
-            setBody(AuthRequest(email, password))
-        }
+        val response =
+            httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}") {
+                contentType(ContentType.Application.Json)
+                setBody(AuthRequest(email, password))
+            }
 
         return if (response.status.value in 200..299) {
             Result.success(response.body<AuthResponse>())
@@ -83,20 +57,26 @@ class FirebaseService {
     }
 
     suspend fun update(updateProfileRequest: UpdateProfileRequest) {
-        val response = httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}") {
-            contentType(ContentType.Application.Json)
-            setBody(updateProfileRequest)
-        }
+        val response =
+            httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:update?key=${API_KEY}") {
+                contentType(ContentType.Application.Json)
+                setBody(updateProfileRequest)
+            }
 
         if (response.status.value in 200..299) {
             println(response.bodyAsText())
         }
     }
 
-    suspend fun uploadImageToFirebase(imageBytes: ByteArray, fileName: String, idToken: String? = null): String? {
+    suspend fun uploadImageToFirebase(
+        imageBytes: ByteArray,
+        fileName: String,
+        idToken: String? = null
+    ): String? {
         val bucketName = "firstkmp-f9053.appspot.com"
         val filePath = "imagens/${fileName}"
-        val firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/$bucketName/o?name=${filePath}"
+        val firebaseUrl =
+            "https://firebasestorage.googleapis.com/v0/b/$bucketName/o?name=${filePath}"
 
         return try {
             val response = httpClient.post(firebaseUrl) {

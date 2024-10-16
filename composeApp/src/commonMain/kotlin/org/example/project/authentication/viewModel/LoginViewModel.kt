@@ -1,11 +1,10 @@
-package org.example.project.authentication.ViewModel
+package org.example.project.authentication.viewModel
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import org.example.project.authentication.Repository.AuthResponse
-import org.example.project.authentication.Repository.AuthResponseError
-import org.example.project.authentication.Repository.FirebaseService
+import org.example.project.authentication.model.AuthResponse
+import org.example.project.authentication.repository.FirebaseService
 import org.example.project.profile.Profile
 
 data class LoginForm(val email: String = "", val password: String = "", val isLogin: Boolean = true)

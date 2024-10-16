@@ -6,7 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import org.example.project.authentication.UI.LoginScreen
+import org.example.project.authentication.ui.LoginScreen
 import org.example.project.homeApp.HomeScreen
 import org.example.project.profile.ProfileScreen
 import org.example.project.sharedViewModel.SharedProfileViewModel

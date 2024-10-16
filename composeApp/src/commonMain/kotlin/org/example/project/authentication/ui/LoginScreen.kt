@@ -1,4 +1,4 @@
-package org.example.project.authentication.UI
+package org.example.project.authentication.ui
 
 import Colors.ColorsDefaults
 import androidx.compose.foundation.Image
@@ -30,10 +30,7 @@ import androidx.compose.ui.window.Dialog
 import firstkmp.composeapp.generated.resources.Res
 import firstkmp.composeapp.generated.resources.firebase
 import kotlinx.coroutines.launch
-import org.example.project.authentication.Repository.AuthResponse
-import org.example.project.authentication.Repository.AuthResponseError
-import org.example.project.authentication.ViewModel.LoginViewModel
-import org.example.project.profile.Profile
+import org.example.project.authentication.viewModel.LoginViewModel
 import org.example.project.sharedViewModel.SharedProfileViewModel
 import org.jetbrains.compose.resources.painterResource
 

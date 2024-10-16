@@ -3,8 +3,8 @@ package org.example.project.sharedViewModel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import org.example.project.authentication.Repository.FirebaseService
-import org.example.project.authentication.Repository.UpdateProfileRequest
+import org.example.project.authentication.model.UpdateProfileRequest
+import org.example.project.authentication.repository.FirebaseService
 import org.example.project.profile.Profile
 
 class SharedProfileViewModel: ViewModel() {
