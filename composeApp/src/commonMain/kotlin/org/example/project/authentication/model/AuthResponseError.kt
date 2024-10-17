@@ -16,3 +16,11 @@ data class ErrorDetail(
     val domain: String,
     val reason: String
 )
+
+enum class ErrorResquestEnum(val code: Int, val message: String) {
+    INVALID_CREDENTIALS(400, "Login ou Senha inválidos");
+
+    companion object {
+        fun fromCode(code: Int) = entries.find { it.code == code }
+    }
+}

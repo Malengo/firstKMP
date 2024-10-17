@@ -14,6 +14,7 @@ import kotlinx.serialization.json.Json
 import org.example.project.authentication.model.AuthRequest
 import org.example.project.authentication.model.AuthResponse
 import org.example.project.authentication.model.AuthResponseError
+import org.example.project.authentication.model.ErrorResquestEnum
 import org.example.project.authentication.model.UpdateProfileRequest
 
 class FirebaseService {
@@ -52,7 +53,8 @@ class FirebaseService {
             Result.success(response.body<AuthResponse>())
         } else {
             val responseError = response.body<AuthResponseError>()
-            Result.failure(Exception(responseError.error.message))
+            val erroMessage: ErrorResquestEnum? = ErrorResquestEnum.fromCode(responseError.error.code)
+            Result.failure(Exception(erroMessage?.message))
         }
     }
 
