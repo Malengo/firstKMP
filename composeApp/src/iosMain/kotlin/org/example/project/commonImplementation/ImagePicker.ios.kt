@@ -1,14 +1,60 @@
 package org.example.project.commonImplementation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.ImageBitmap
+import kotlinx.cinterop.ByteVar
+import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.cinterop.get
+import kotlinx.cinterop.reinterpret
+import platform.Foundation.NSOperationQueue
+import platform.Photos.PHAuthorizationStatusAuthorized
+import platform.Photos.PHPhotoLibrary
+import platform.UIKit.UIApplication
+import platform.UIKit.UIImage
+import platform.UIKit.UIImageJPEGRepresentation
+import platform.UIKit.UIImagePickerController
+import platform.UIKit.UIImagePickerControllerDelegateProtocol
+import platform.UIKit.UIImagePickerControllerEditedImage
+import platform.UIKit.UIImagePickerControllerOriginalImage
+import platform.UIKit.UIImagePickerControllerSourceType
+import platform.UIKit.UINavigationControllerDelegateProtocol
+import platform.darwin.NSObject
 
- class ImagePicker {
-    actual suspend fun pickImage(callback: (ImageBitmap?) -> Unit) {
+actual class ImagePicker {
+    actual suspend fun pickImage(callback: (Any?) -> Unit) {
+        val viewController = UIApplication.sharedApplication.keyWindow?.rootViewController
+        PHPhotoLibrary.requestAuthorization { staus ->
+            if (staus == PHAuthorizationStatusAuthorized) {
+                val imagePicker = UIImagePickerController()
+                val galleryDelegate = object : NSObject(), UIImagePickerControllerDelegateProtocol, UINavigationControllerDelegateProtocol {
+                    override fun imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo: Map<Any?, *>) {
+                        val image = didFinishPickingMediaWithInfo[UIImagePickerControllerEditedImage] as? UIImage
+                            ?: didFinishPickingMediaWithInfo[UIImagePickerControllerOriginalImage] as? UIImage
+                        picker.dismissViewControllerAnimated(true, null)
+                        callback(toByteArray(image))
+                    }
+                }
+                imagePicker.setDelegate(galleryDelegate)
+                imagePicker.setSourceType(UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary)
+                imagePicker.setAllowsEditing(true)
+                imagePicker.setDelegate(galleryDelegate)
+                NSOperationQueue.mainQueue.addOperationWithBlock {
+                    viewController?.presentViewController(imagePicker, true, null)
+                }
+            }
+
+        }
     }
 }
-
+@OptIn(ExperimentalForeignApi::class)
+private fun toByteArray(image: UIImage?): ByteArray? {
+    return image?.let {
+        val imageData = UIImageJPEGRepresentation(it, 0.99)
+        val bytes = imageData?.bytes?.reinterpret<ByteVar>()
+        val length = imageData?.length?.toInt() ?: 0
+        ByteArray(length) { index -> bytes?.get(index)?.toByte() ?:0 }
+    }
+}
 @Composable
- fun rememberImagePicker(): ImagePicker {
-    TODO("Not yet implemented")
+actual fun rememberImagePicker(): ImagePicker {
+    return ImagePicker()
 }

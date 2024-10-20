@@ -43,7 +43,7 @@ class LoginViewModel : ViewModel() {
 
     suspend fun handleLoginFirebase(): Result<Profile> {
         return try {
-            val response = auth.login("jose.malengo@hotmail.com.br", "123456")
+            val response = auth.login("jose.malengo@hotmail.com", "123456")
 
             response.fold(
                 onSuccess = { auth: AuthResponse ->

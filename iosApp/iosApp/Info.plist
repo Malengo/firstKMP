@@ -46,5 +46,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSAllowsArbitraryLoads</key>
+        <true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+        <string>Your app needs access to the photo library to select photos and videos.</string>
 </dict>
 </plist>
