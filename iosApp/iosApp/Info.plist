@@ -50,5 +50,10 @@
         <true/>
 	<key>NSPhotoLibraryUsageDescription</key>
         <string>Your app needs access to the photo library to select photos and videos.</string>
+        <key>NSAppTransportSecurity</key>
+        <dict>
+            <key>NSAllowsArbitraryLoads</key>
+            <true/>
+        </dict>
 </dict>
 </plist>

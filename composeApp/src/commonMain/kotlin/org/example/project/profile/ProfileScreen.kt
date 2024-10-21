@@ -1,7 +1,6 @@
 package org.example.project.profile
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -32,7 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import coil3.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.launch
 import org.example.project.commonImplementation.rememberImagePicker
 import org.example.project.sharedViewModel.SharedProfileViewModel
@@ -47,7 +45,7 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel) {
     Column(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxHeight().padding(top = 25.dp)
+        modifier = Modifier.fillMaxHeight().padding(top = 50.dp)
     ) {
         Box(
             modifier = Modifier.align(Alignment.CenterHorizontally)
