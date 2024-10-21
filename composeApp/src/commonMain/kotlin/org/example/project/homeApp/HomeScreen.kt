@@ -57,7 +57,7 @@ import org.example.project.sharedViewModel.SharedProfileViewModel
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun HomeScreen(navController: NavController, sharedProfileViewModel: SharedProfileViewModel) {
+fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedProfileViewModel) {
 
     val showDialog = remember { mutableStateOf(false) }
 
@@ -69,7 +69,7 @@ fun HomeScreen(navController: NavController, sharedProfileViewModel: SharedProfi
     }
 
     if (showDialog.value) {
-        showMessage(showDialog, navController)
+        showMessage(showDialog, navToProfileScreen)
     }
 
     Column (
@@ -123,7 +123,7 @@ fun HomeScreen(navController: NavController, sharedProfileViewModel: SharedProfi
                         .clickable(
                             enabled = true
                         ) {
-                            navController.navigate(route = AppRouterName.ProfileScreen.name)
+                            navToProfileScreen()
                         }
                 )
             }
@@ -228,7 +228,7 @@ fun HomeScreen(navController: NavController, sharedProfileViewModel: SharedProfi
 }
 
 @Composable
-fun showMessage(showDialog: MutableState<Boolean>, navController: NavController) {
+fun showMessage(showDialog: MutableState<Boolean>, navToProfileScreen: () -> Unit) {
     AlertDialog(
         onDismissRequest = {
             showDialog.value = false
@@ -237,7 +237,7 @@ fun showMessage(showDialog: MutableState<Boolean>, navController: NavController)
             TextButton(
                 onClick = {
                     showDialog.value = false
-                    navController.navigate(route = AppRouterName.ProfileScreen.name)
+                    navToProfileScreen()
                 }
             ) {
                 Text("OK")

@@ -36,7 +36,7 @@ import org.example.project.commonImplementation.rememberImagePicker
 import org.example.project.sharedViewModel.SharedProfileViewModel
 
 @Composable
-fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel) {
+fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modifier) {
     var selectedImage by remember { mutableStateOf<Any?>(null) }
     val imagePicker = rememberImagePicker()
     val scope = rememberCoroutineScope()
