@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
@@ -79,7 +81,7 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(230.dp)
+                .height(200.dp)
                 .clip(
                     RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp)
                 )
@@ -97,13 +99,14 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
                 )
                 Text(
                     text = (sharedProfileViewModel.profile.value.displayName ?: ""),
-                    fontSize = 25.sp,
+                    fontSize = 30.sp,
                     style = LocalTextStyle.current.merge(
                         TextStyle(
                             lineHeight = 1.0.em,
                             fontWeight = FontWeight.ExtraLight
                         )
-                    )
+                    ),
+                    color = ColorsDefaults.onPrimaryLight
                 )
             }
             Column (
