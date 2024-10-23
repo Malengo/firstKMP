@@ -26,7 +26,7 @@ class SharedProfileViewModel: ViewModel() {
     }
 
     suspend fun onProfilePictureChanged(newImageUrl: ByteArray) {
-        val url = _firebaseService.uploadImageToFirebase(newImageUrl, "${profile.value.displayName}_profilepicture.png", profile.value.idToken)
+        val url = _firebaseService.uploadImageToFirebase(newImageUrl, "${profile.value.email}_profilepicture.png", profile.value.idToken)
         _profile.value = _profile.value.copy(profilePicture = url)
     }
 

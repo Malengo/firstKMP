@@ -9,6 +9,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,6 +20,14 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import coil3.ImageLoader
+import coil3.PlatformContext
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.setSingletonImageLoaderFactory
+import coil3.memory.MemoryCache
+import coil3.request.CachePolicy
+import coil3.request.crossfade
+import coil3.util.DebugLogger
 import org.example.project.authentication.ui.LoginScreen
 import org.example.project.homeApp.HomeScreen
 import org.example.project.profile.ProfileScreen
@@ -46,7 +55,7 @@ fun EnglishAppBar(
             if (canNavigateBack) {
                 IconButton(onClick = navigateUp) {
                     Icon(
-                        imageVector = Icons.Filled.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                         contentDescription = "",
                         tint = ColorsDefaults.primaryLight
                     )
@@ -58,42 +67,41 @@ fun EnglishAppBar(
 
 @Composable
 fun App(navController: NavHostController = rememberNavController()) {
-    val sharedProfileViewModel: SharedProfileViewModel =
-        viewModel { SharedProfileViewModel() }
+    val sharedProfileViewModel: SharedProfileViewModel = viewModel { SharedProfileViewModel() }
 
-        NavHost(
-            navController = navController,
-            startDestination = AppRouterName.Login.name,
-            modifier = Modifier.padding()
-        ) {
-            composable(AppRouterName.Login.name) {
-                    LoginScreen(
-                        {
-                            navController.navigate(AppRouterName.Home.name)
-                        },
-                        sharedProfileViewModel
+    NavHost(
+        navController = navController,
+        startDestination = AppRouterName.Login.name,
+        modifier = Modifier.padding()
+    ) {
+        composable(AppRouterName.Login.name) {
+            LoginScreen(
+                {
+                    navController.navigate(AppRouterName.Home.name)
+                },
+                sharedProfileViewModel
+            )
+        }
+        composable(AppRouterName.Home.name) {
+            HomeScreen(
+                { navController.navigate(AppRouterName.ProfileScreen.name) },
+                sharedProfileViewModel
+            )
+        }
+        composable(AppRouterName.ProfileScreen.name) {
+            Scaffold(
+                topBar = {
+                    EnglishAppBar(
+                        canNavigateBack = navController.previousBackStackEntry != null,
+                        navigateUp = { navController.navigateUp() },
+                        title = "Perfil"
                     )
-            }
-            composable(AppRouterName.Home.name) {
-                    HomeScreen(
-                        { navController.navigate(AppRouterName.ProfileScreen.name) },
-                        sharedProfileViewModel
-                    )
-            }
-            composable(AppRouterName.ProfileScreen.name) {
-                Scaffold(
-                    topBar = {
-                        EnglishAppBar(
-                            canNavigateBack = navController.previousBackStackEntry != null,
-                            navigateUp = { navController.navigateUp() },
-                            title = "Perfil"
-                        )
-                    }
-                ) { innerPadding ->
-                    ProfileScreen(sharedProfileViewModel, modifier = Modifier.padding(innerPadding))
                 }
+            ) { innerPadding ->
+                ProfileScreen(sharedProfileViewModel, modifier = Modifier.padding(innerPadding))
             }
         }
+    }
 
 }
 
