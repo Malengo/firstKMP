@@ -40,8 +40,9 @@ actual class ImagePicker {
                 NSOperationQueue.mainQueue.addOperationWithBlock {
                     viewController?.presentViewController(imagePicker, true, null)
                 }
+            } else {
+                callback(null)
             }
-
         }
     }
 }

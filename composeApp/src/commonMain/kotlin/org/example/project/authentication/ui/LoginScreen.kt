@@ -39,6 +39,7 @@ import firstkmp.composeapp.generated.resources.Res
 import firstkmp.composeapp.generated.resources.englishApp
 import kotlinx.coroutines.launch
 import org.example.project.authentication.viewModel.LoginViewModel
+import org.example.project.components.DialogError
 import org.example.project.sharedViewModel.SharedProfileViewModel
 import org.jetbrains.compose.resources.painterResource
 
@@ -57,31 +58,7 @@ fun LoginScreen(
     var messageError by remember { mutableStateOf("") }
 
     if (openDialog.value) {
-        Dialog(onDismissRequest = { openDialog.value = false }) {
-            Column (
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .clip(
-                        RoundedCornerShape(10.dp)
-                    )
-                    .background(ColorsDefaults.errorContainerLight.copy(alpha = 0.8f))
-                    .fillMaxWidth()
-                    .height(200.dp)
-            ) {
-                Icon(
-                    Icons.Default.Warning,
-                    contentDescription = "",
-                    tint = ColorsDefaults.onPrimaryLight,
-                    modifier = Modifier.size(50.dp)
-                )
-                Text(
-                    messageError,
-                    modifier = Modifier.padding(10.dp),
-                    fontWeight = FontWeight.Black
-                )
-            }
-        }
+        DialogError(messageError, openDialog)
     }
 
     Column(

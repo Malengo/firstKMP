@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import kotlinx.coroutines.launch
 import org.example.project.commonImplementation.rememberImagePicker
+import org.example.project.components.DialogError
 import org.example.project.sharedViewModel.SharedProfileViewModel
 
 @Composable
@@ -41,6 +42,11 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
     val imagePicker = rememberImagePicker()
     val scope = rememberCoroutineScope()
     val profileState = sharedProfileViewModel.profile
+    val openDialog = remember { mutableStateOf(false) }
+    var messageError by remember { mutableStateOf("") }
+    if(openDialog.value) {
+        DialogError(messageError, openDialog)
+    }
 
     Column(
         verticalArrangement = Arrangement.Top,
@@ -74,6 +80,9 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
                                     sharedProfileViewModel.onProfilePictureChanged(imageBitmap as ByteArray)
                                     selectedImage = imageBitmap
                                 }
+                            } else {
+                                openDialog.value = true
+                                messageError = "Sem permissão de acesso a galeria"
                             }
                         }
                     }
