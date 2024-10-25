@@ -136,7 +136,8 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
                     loading = {
                         CircularProgressIndicator(
                             modifier = Modifier.align(Alignment.Center),
-                            strokeWidth = 8.dp
+                            strokeWidth = 8.dp,
+                            color = ColorsDefaults.primaryLight
                             )
                     },
                     modifier = Modifier

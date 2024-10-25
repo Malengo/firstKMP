@@ -1,5 +1,6 @@
 package org.example.project.profile
 
+import Colors.ColorsDefaults
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -47,7 +49,7 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
     var selectedImage by remember { mutableStateOf<Any?>(null) }
     val imagePicker = rememberImagePicker()
     val scope = rememberCoroutineScope()
-    val profileState by sharedProfileViewModel.profile.collectAsState()
+    val profileState = sharedProfileViewModel.profile
     val openDialog = remember { mutableStateOf(false) }
     var messageError by remember { mutableStateOf("") }
     if(openDialog.value) {
@@ -64,17 +66,14 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
                 .padding(10.dp)
         ) {
             SubcomposeAsyncImage(
-                model = ImageRequest.Builder(LocalPlatformContext.current)
-                    .data(profileState.profilePicture + "&token=" + profileState.idToken)
-                    .memoryCachePolicy(CachePolicy.DISABLED)
-                    .diskCachePolicy(CachePolicy.DISABLED)
-                    .build(),
+                model = selectedImage ?: "${profileState.value.profilePicture}&token=${profileState.value.idToken}",
                 contentDescription = null,
                 contentScale = ContentScale.Crop,
                 loading = {
                     CircularProgressIndicator(
                         modifier = Modifier.align(Alignment.Center),
-                        strokeWidth = 8.dp
+                        strokeWidth = 8.dp,
+                        color = ColorsDefaults.primaryLight
                     )
                 },
                 modifier = Modifier
@@ -107,7 +106,7 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
         }
         TextField(
             modifier = Modifier.padding(all = 10.dp).fillMaxWidth(),
-            value = profileState.displayName ?: "",
+            value = profileState.value.displayName ?: "",
             onValueChange = sharedProfileViewModel::onDisplayNameChanged,
             label = {
                 Text("Nome")
@@ -115,7 +114,7 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
         )
         TextField(
             modifier = Modifier.padding(all = 10.dp).fillMaxWidth(),
-            value = profileState.email,
+            value = profileState.value.email,
             onValueChange = sharedProfileViewModel::onEmailChanged,
             label = {
                 Text("Email")
@@ -123,13 +122,17 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
         )
         Button(
             modifier = Modifier.padding(all = 10.dp).fillMaxWidth().height(50.dp),
+            colors = ButtonDefaults.buttonColors(ColorsDefaults.primaryLight),
             onClick = {
                 scope.launch {
                     sharedProfileViewModel.handlerUpdateProfileFireBase()
                 }
             }
         ) {
-            Text("Atualizar Perfil")
+            Text(
+                color = ColorsDefaults.onPrimaryLight,
+                text = "Atualizar Perfil"
+            )
         }
     }
 }
