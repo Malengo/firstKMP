@@ -3,14 +3,16 @@ package org.example.project.sharedViewModel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import org.example.project.authentication.model.UpdateProfileRequest
 import org.example.project.authentication.repository.FirebaseService
 import org.example.project.profile.Profile
 
 class SharedProfileViewModel: ViewModel() {
 
-    private val _profile = mutableStateOf(Profile())
-    val profile: State<Profile> = _profile
+    private val _profile = MutableStateFlow(Profile())
+    val profile: StateFlow<Profile> = _profile
     private val _firebaseService = FirebaseService()
 
     fun addProfile(newProfile: Profile) {

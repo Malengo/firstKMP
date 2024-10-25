@@ -22,6 +22,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -49,17 +50,29 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import coil3.request.CachePolicy
+import coil3.request.ImageRequest
 import firstkmp.composeapp.generated.resources.Res
 import firstkmp.composeapp.generated.resources.backgroundHome
 import firstkmp.composeapp.generated.resources.goals
 import org.example.project.homeApp.components.cardLesson
 import org.example.project.sharedViewModel.SharedProfileViewModel
 import org.jetbrains.compose.resources.painterResource
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import coil3.compose.SubcomposeAsyncImage
 
 @Composable
 fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedProfileViewModel) {
 
     val showDialog = remember { mutableStateOf(false) }
+    val profileState by sharedProfileViewModel.profile.collectAsState()
+    val showLoading = remember { mutableStateOf(false) }
+
+    if (showLoading.value) {
+        CircularProgressIndicator()
+    }
 
     LaunchedEffect(Unit) {
         showDialog.value = true
@@ -112,10 +125,20 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
             Column (
                 modifier = Modifier.padding(top = 40.dp, end = 10.dp)
             ) {
-                AsyncImage(
-                    model = sharedProfileViewModel.profile.value.profilePicture + "&token=" + sharedProfileViewModel.profile.value.idToken,
+                SubcomposeAsyncImage(
+                    model = ImageRequest.Builder(LocalPlatformContext.current)
+                        .data(profileState.profilePicture + "&token=" + profileState.idToken)
+                        .memoryCachePolicy(CachePolicy.DISABLED)
+                        .diskCachePolicy(CachePolicy.DISABLED)
+                        .build(),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
+                    loading = {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                            strokeWidth = 8.dp
+                            )
+                    },
                     modifier = Modifier
                         .size(60.dp)
                         .clip(CircleShape)
