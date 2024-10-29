@@ -34,6 +34,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -49,8 +50,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
-import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
+import coil3.compose.SubcomposeAsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
 import firstkmp.composeapp.generated.resources.Res
@@ -59,15 +60,12 @@ import firstkmp.composeapp.generated.resources.goals
 import org.example.project.homeApp.components.cardLesson
 import org.example.project.sharedViewModel.SharedProfileViewModel
 import org.jetbrains.compose.resources.painterResource
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import coil3.compose.SubcomposeAsyncImage
 
 @Composable
 fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedProfileViewModel) {
 
     val showDialog = remember { mutableStateOf(false) }
-    val profileState by sharedProfileViewModel.profile.collectAsState()
+    val profileState by sharedProfileViewModel.profile
     val showLoading = remember { mutableStateOf(false) }
 
     if (showLoading.value) {
@@ -127,7 +125,7 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
             ) {
                 SubcomposeAsyncImage(
                     model = ImageRequest.Builder(LocalPlatformContext.current)
-                        .data(profileState.profilePicture + "&token=" + profileState.idToken)
+                        .data("${profileState.profilePicture}&token=${profileState.idToken}")
                         .memoryCachePolicy(CachePolicy.DISABLED)
                         .diskCachePolicy(CachePolicy.DISABLED)
                         .build(),
