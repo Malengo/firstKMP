@@ -99,7 +99,7 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
                     contentScale = ContentScale.FillBounds
                 )
         ) {
-            Column (
+            Column(
                 modifier = Modifier.padding(top = 80.dp, start = 10.dp)
             ) {
                 Text(
@@ -121,7 +121,7 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
                 )
             }
             Column (
-                modifier = Modifier.padding(top = 40.dp, end = 10.dp)
+                modifier = Modifier.padding(top = 50.dp, end = 10.dp)
             ) {
                 SubcomposeAsyncImage(
                     model = ImageRequest.Builder(LocalPlatformContext.current)
@@ -139,7 +139,7 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
                             )
                     },
                     modifier = Modifier
-                        .size(60.dp)
+                        .size(80.dp)
                         .clip(CircleShape)
                         .border(
                             BorderStroke(2.dp, color = Color.LightGray),
