@@ -117,7 +117,8 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
                             fontWeight = FontWeight.ExtraLight
                         )
                     ),
-                    color = ColorsDefaults.onPrimaryLight
+                    color = ColorsDefaults.onPrimaryLight,
+                    modifier = Modifier.width(220.dp)
                 )
             }
             Column (
