@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.example.project.authentication.ui.LoginScreen
 import org.example.project.homeApp.HomeScreen
+import org.example.project.lessons.ui.NewWordScreen
 import org.example.project.profile.ProfileScreen
 import org.example.project.sharedViewModel.SharedProfileViewModel
 
@@ -26,7 +27,8 @@ import org.example.project.sharedViewModel.SharedProfileViewModel
 enum class AppRouterName {
     Login,
     Home,
-    ProfileScreen
+    ProfileScreen,
+    NewWordScreen
 }
 
 @Composable
@@ -74,7 +76,8 @@ fun App(navController: NavHostController = rememberNavController()) {
         composable(AppRouterName.Home.name) {
             HomeScreen(
                 { navController.navigate(AppRouterName.ProfileScreen.name) },
-                sharedProfileViewModel
+                sharedProfileViewModel,
+                navController
             )
         }
         composable(AppRouterName.ProfileScreen.name) {
@@ -89,6 +92,9 @@ fun App(navController: NavHostController = rememberNavController()) {
             ) { innerPadding ->
                 ProfileScreen(sharedProfileViewModel, modifier = Modifier.padding(innerPadding))
             }
+        }
+        composable(AppRouterName.NewWordScreen.name) {
+            NewWordScreen(navToHome = { navController.navigate(AppRouterName.Home.name) })
         }
     }
 

@@ -50,6 +50,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil3.compose.LocalPlatformContext
 import coil3.compose.SubcomposeAsyncImage
 import coil3.request.CachePolicy
@@ -57,12 +58,17 @@ import coil3.request.ImageRequest
 import firstkmp.composeapp.generated.resources.Res
 import firstkmp.composeapp.generated.resources.backgroundHome
 import firstkmp.composeapp.generated.resources.goals
+import org.example.project.AppRouterName
 import org.example.project.homeApp.components.cardLesson
 import org.example.project.sharedViewModel.SharedProfileViewModel
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedProfileViewModel) {
+fun HomeScreen(
+    navToProfileScreen: () -> Unit,
+    sharedProfileViewModel: SharedProfileViewModel,
+    navController: NavHostController
+) {
 
     val showDialog = remember { mutableStateOf(false) }
     val profileState by sharedProfileViewModel.profile
@@ -180,10 +186,26 @@ fun HomeScreen(navToProfileScreen: () -> Unit, sharedProfileViewModel: SharedPro
                         RoundedCornerShape(10.dp)
                     )
             ) {
-                cardLesson("Writing", Icons.Filled.Edit, Color.Black, ColorsDefaults.secondaryLight)
-                cardLesson("Speaking", Icons.Filled.Face, Color.White, ColorsDefaults.tertiaryLight)
-                cardLesson("Listening", Icons.Filled.PlayArrow, Color.Black, ColorsDefaults.secondaryContainerLight)
-                cardLesson("Game", Icons.Filled.Settings, Color.White, ColorsDefaults.primaryLight)
+                cardLesson("Writing", Icons.Filled.Edit, Color.Black, ColorsDefaults.secondaryLight) {
+                    navController.navigate(
+                        AppRouterName.NewWordScreen.name
+                    )
+                }
+                cardLesson("Speaking", Icons.Filled.Face, Color.White, ColorsDefaults.tertiaryLight) {
+                    navController.navigate(
+                        AppRouterName.NewWordScreen.name
+                    )
+                }
+                cardLesson("Listening", Icons.Filled.PlayArrow, Color.Black, ColorsDefaults.secondaryContainerLight) {
+                    navController.navigate(
+                        AppRouterName.NewWordScreen.name
+                    )
+                }
+                cardLesson("Game", Icons.Filled.Settings, Color.White, ColorsDefaults.primaryLight) {
+                    navController.navigate(
+                        AppRouterName.NewWordScreen.name
+                    )
+                }
             }
             Card (
                 modifier = Modifier
