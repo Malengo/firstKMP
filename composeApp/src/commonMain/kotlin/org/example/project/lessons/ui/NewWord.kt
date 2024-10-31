@@ -2,7 +2,6 @@ package org.example.project.lessons.ui
 
 import Colors.ColorsDefaults
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,14 +9,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Icon
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import firstkmp.composeapp.generated.resources.Res
 import firstkmp.composeapp.generated.resources.backgroundHome
+import org.example.project.lessons.components.HeaderLessonsProgress
 import org.jetbrains.compose.resources.painterResource
 
 
@@ -44,17 +40,7 @@ fun NewWordScreen(navToHome : () -> Unit) {
             .fillMaxHeight()
             .background(color = Color.White)
     ) {
-        Icon(
-            modifier = Modifier
-                .padding(start = 10.dp, top = 30.dp)
-                .size(30.dp)
-                .align(Alignment.Start)
-                .clickable {
-                    navToHome()
-                },
-            imageVector = Icons.Filled.Close,
-            contentDescription = "Closed"
-        )
+        HeaderLessonsProgress(1, navToHome)
         Text(
             "You'll learn the word...",
             fontSize = 30.sp,
@@ -68,7 +54,7 @@ fun NewWordScreen(navToHome : () -> Unit) {
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(
-                    RoundedCornerShape(topStart = 60.dp, topEnd = 60.dp)
+                    RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                 )
                 .paint(
                     painterResource(resource = Res.drawable.backgroundHome),
