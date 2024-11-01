@@ -42,11 +42,10 @@ fun NewWordScreen(navHostController: NavHostController) {
             .fillMaxHeight()
             .background(color = Color.White)
     ) {
-        HeaderLessonsProgress(1) { navHostController.navigate(AppRouterName.Home.name) }
+        HeaderLessonsProgress(0) { navHostController.navigate(AppRouterName.Home.name) }
         Text(
             "You'll learn the word...",
             fontSize = 30.sp,
-            fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 100.dp)
         )
         Column(
