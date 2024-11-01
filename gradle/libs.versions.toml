@@ -1,5 +1,5 @@
 [versions]
-agp = "8.7.1"
+agp = "8.7.2"
 android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
@@ -12,10 +12,10 @@ firebaseStorage = "21.0.1"
 kotlin = "2.0.20"
 kotlinxDatetime = "0.6.0"
 ktor = "3.0.0-wasm2"
-material3Android = "1.3.0"
+material3Android = "1.3.1"
 navigationCompose = "2.7.0-alpha07"
 skiko = "0.8.4"
-uiToolingPreview = "1.7.4"
+uiToolingPreview = "1.7.5"
 
 [libraries]
 androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "uiToolingPreview" }
