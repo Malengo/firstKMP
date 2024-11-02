@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -41,21 +42,25 @@ fun NewWordScreen(navHostController: NavHostController) {
             .fillMaxWidth()
             .fillMaxHeight()
             .background(color = Color.White)
+            .safeDrawingPadding()
     ) {
         HeaderLessonsProgress(0) { navHostController.navigate(AppRouterName.Home.name) }
         Text(
             "You'll learn the word...",
-            fontSize = 30.sp,
-            modifier = Modifier.padding(top = 100.dp)
+            fontSize = 25.sp,
+            modifier = Modifier.padding(top = 15.dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .padding(top = 70.dp)
+                .padding(top = 30.dp)
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(
-                    RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
+                    RoundedCornerShape(
+                        topStart = 40.dp,
+                        topEnd = 40.dp
+                    )
                 )
                 .paint(
                     painterResource(resource = Res.drawable.backgroundHome),
@@ -64,7 +69,7 @@ fun NewWordScreen(navHostController: NavHostController) {
         ) {
             Text(
                 "BALL",
-                fontSize = 50.sp,
+                fontSize = 38.sp,
                 fontWeight = FontWeight.Light,
                 color = Color.White,
                 modifier = Modifier.padding(top = 10.dp)

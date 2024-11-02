@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -45,7 +46,12 @@ import org.jetbrains.compose.resources.painterResource
 fun SelectWordScreen(navHostController: NavHostController) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize().background(color = Color.White)
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(color = Color.White)
+            .safeDrawingPadding()
     ) {
         HeaderLessonsProgress(1) { navHostController.navigate(AppRouterName.Home.name) }
         Text(
@@ -53,13 +59,13 @@ fun SelectWordScreen(navHostController: NavHostController) {
             color = Color.Black,
             fontSize = 25.sp,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 50.dp)
+            modifier = Modifier.padding(top = 15.dp)
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .padding(top = 70.dp)
+                .padding(top = 30.dp)
                 .fillMaxHeight()
                 .fillMaxWidth()
                 .clip(

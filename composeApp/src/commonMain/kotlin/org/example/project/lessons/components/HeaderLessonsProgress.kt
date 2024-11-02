@@ -24,7 +24,7 @@ fun HeaderLessonsProgress(progress: Int, navToHome: () -> Unit) {
         horizontalArrangement = Arrangement.SpaceAround,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 50.dp)
+            .padding(top = 10.dp)
     ) {
         Icon(
             modifier = Modifier
