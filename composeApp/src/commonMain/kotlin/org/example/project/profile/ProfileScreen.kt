@@ -36,6 +36,7 @@ import coil3.compose.LocalPlatformContext
 import coil3.compose.SubcomposeAsyncImage
 import coil3.request.CachePolicy
 import coil3.request.ImageRequest
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.example.project.commonImplementation.rememberImagePicker
 import org.example.project.components.DialogError
@@ -95,7 +96,7 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
                     scope.launch {
                         imagePicker.pickImage { imageBitmap ->
                             if (imageBitmap != null) {
-                                scope.launch {
+                                scope.launch(Dispatchers.Main) {
                                     sharedProfileViewModel.onProfilePictureChanged(imageBitmap as ByteArray)
                                     selectedImage = imageBitmap
                                 }

@@ -5,7 +5,10 @@ import kotlinx.cinterop.ByteVar
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.get
 import kotlinx.cinterop.reinterpret
-import platform.Foundation.NSOperationQueue
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import platform.Photos.PHAuthorizationStatusAuthorized
 import platform.Photos.PHPhotoLibrary
 import platform.UIKit.UIApplication
@@ -20,6 +23,7 @@ import platform.UIKit.UINavigationControllerDelegateProtocol
 import platform.darwin.NSObject
 
 actual class ImagePicker {
+    @OptIn(DelicateCoroutinesApi::class)
     actual suspend fun pickImage(callback: (Any?) -> Unit) {
         val viewController = UIApplication.sharedApplication.keyWindow?.rootViewController
         PHPhotoLibrary.requestAuthorization { staus ->
@@ -37,7 +41,7 @@ actual class ImagePicker {
                 imagePicker.setSourceType(UIImagePickerControllerSourceType.UIImagePickerControllerSourceTypePhotoLibrary)
                 imagePicker.setAllowsEditing(true)
                 imagePicker.setDelegate(galleryDelegate)
-                NSOperationQueue.mainQueue.addOperationWithBlock {
+                GlobalScope.launch(Dispatchers.Main) {
                     viewController?.presentViewController(imagePicker, true, null)
                 }
             } else {
