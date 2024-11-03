@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -46,8 +47,9 @@ fun NewWordScreen(navHostController: NavHostController) {
     ) {
         HeaderLessonsProgress(0) { navHostController.navigate(AppRouterName.Home.name) }
         Text(
-            "You'll learn the word...",
-            fontSize = 25.sp,
+            "You will learn the new word...",
+            textAlign = TextAlign.Center,
+            fontSize = 29.sp,
             modifier = Modifier.padding(top = 15.dp)
         )
         Column(

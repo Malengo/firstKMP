@@ -132,6 +132,7 @@ fun SelectWordScreen(navHostController: NavHostController) {
                     onClick = {
 
                     },
+                    enabled = data.any { it.second.value },
                     colors = ButtonDefaults.buttonColors(ColorsDefaults.backgroundDarkHighContrast),
                     modifier = Modifier
                         .fillMaxWidth()
