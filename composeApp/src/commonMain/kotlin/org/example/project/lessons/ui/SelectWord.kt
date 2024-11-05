@@ -130,7 +130,7 @@ fun SelectWordScreen(navHostController: NavHostController) {
             ) {
                 Button(
                     onClick = {
-
+                        navHostController.navigate(AppRouterName.WriteWordScreen.name)
                     },
                     enabled = data.any { it.second.value },
                     colors = ButtonDefaults.buttonColors(ColorsDefaults.backgroundDarkHighContrast),

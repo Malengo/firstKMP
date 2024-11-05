@@ -21,6 +21,7 @@ import org.example.project.authentication.ui.LoginScreen
 import org.example.project.homeApp.HomeScreen
 import org.example.project.lessons.ui.NewWordScreen
 import org.example.project.lessons.ui.SelectWordScreen
+import org.example.project.lessons.ui.WriteWordScreen
 import org.example.project.profile.ProfileScreen
 import org.example.project.sharedViewModel.SharedProfileViewModel
 
@@ -30,7 +31,8 @@ enum class AppRouterName {
     Home,
     ProfileScreen,
     NewWordScreen,
-    SelectWordScreen
+    SelectWordScreen,
+    WriteWordScreen
 }
 
 @Composable
@@ -100,6 +102,9 @@ fun App(navController: NavHostController = rememberNavController()) {
         }
         composable(AppRouterName.SelectWordScreen.name) {
             SelectWordScreen(navHostController = navController)
+        }
+        composable(AppRouterName.WriteWordScreen.name) {
+            WriteWordScreen(navHostController = navController)
         }
     }
 
