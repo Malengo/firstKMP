@@ -4,7 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +25,26 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@androidx.compose.ui.tooling.preview.Preview(device = "id:pixel_9")
+@androidx.compose.ui.tooling.preview.Preview(device = "id:Nexus 4")
 @Composable
 fun DefaultPreview() {
+    Column(
+        modifier = Modifier.fillMaxSize().background(Color.White)
+    ) {
+        Row(
+            modifier = Modifier.background(Color.Black).fillMaxWidth().height(100.dp)
+        ) {
+
+        }
+        Row(
+            modifier = Modifier.background(Color.Yellow).fillMaxWidth().weight(1f)
+        ) {
+
+        }
+        Row(
+            modifier = Modifier.background(Color.Red).fillMaxWidth().height(100.dp)
+        ) {
+
+        }
+    }
 }
