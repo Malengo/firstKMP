@@ -89,7 +89,6 @@ fun WriteWordScreen(navHostController: NavHostController) {
                 )
 
         ) {
-
             AsyncImage(
                 model = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/25d45014-8cc3-4c98-b02c-5a0cf3a55ddd/dcgoypr-bb7aa4ed-2b44-414b-9042-e878a8542738.png/v1/fill/w_989,h_808/soccer_ball_on_a_transparent_background__by_prussiaart_dcgoypr-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODM2IiwicGF0aCI6IlwvZlwvMjVkNDUwMTQtOGNjMy00Yzk4LWIwMmMtNWEwY2YzYTU1ZGRkXC9kY2dveXByLWJiN2FhNGVkLTJiNDQtNDE0Yi05MDQyLWU4NzhhODU0MjczOC5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.f5wVeyksvXP-TgMFs1oQNOLU0_it1GMYklAjGKQEXYk",
                 contentDescription = "BALL",
@@ -102,7 +101,6 @@ fun WriteWordScreen(navHostController: NavHostController) {
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(word.length),
                     contentPadding = PaddingValues(8.dp),
@@ -131,32 +129,46 @@ fun WriteWordScreen(navHostController: NavHostController) {
                 }
             }
             FlowRow(
-                modifier = Modifier.fillMaxWidth().padding(start = 50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 50.dp)
+                    .weight(1f),
                 verticalArrangement = Arrangement.spacedBy(-(40).dp),
                 horizontalArrangement = Arrangement.spacedBy(-(7).dp)
             ) {
                 letters.forEachIndexed { position, letter ->
                     val padding = if (position % 2 == 0) 30.dp else 0.dp
-                    RoundedPolygonBox(letter.toString().uppercase(), modifier = Modifier.padding(top = padding))
+                    RoundedPolygonBox(
+                        letter.toString().uppercase(),
+                        modifier = Modifier.padding(top = padding)
+                    )
                 }
             }
-            Button(
-                onClick = {
-
-                },
-                colors = ButtonDefaults.buttonColors(ColorsDefaults.backgroundDarkHighContrast),
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp)
-                    .padding(
-                        start = 10.dp,
-                        end = 10.dp,
-                    )
+                    .height(100.dp)
+                    .padding(bottom = 30.dp),
+                verticalArrangement = Arrangement.Bottom
             ) {
-                Text(
-                    "Next",
-                    color = ColorsDefaults.onPrimaryLight
-                )
+                Button(
+                    onClick = {
+                        navHostController.navigate(AppRouterName.WriteWordScreen.name)
+                    },
+                    colors = ButtonDefaults.buttonColors(ColorsDefaults.backgroundDarkHighContrast),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .padding(
+                            start = 10.dp,
+                            end = 10.dp,
+                        )
+                ) {
+                    Text(
+                        "Next",
+                        color = ColorsDefaults.onPrimaryLight
+                    )
+                }
             }
 
         }
@@ -166,7 +178,13 @@ fun WriteWordScreen(navHostController: NavHostController) {
 
 private const val PI = 3.141592653589793f
 
-fun roundedPolygonPath(numVertices: Int, radius: Float, cornerRadius: Float, centerX: Float, centerY: Float): Path {
+fun roundedPolygonPath(
+    numVertices: Int,
+    radius: Float,
+    cornerRadius: Float,
+    centerX: Float,
+    centerY: Float
+): Path {
     val path = Path()
     val angle = 360f / numVertices
 

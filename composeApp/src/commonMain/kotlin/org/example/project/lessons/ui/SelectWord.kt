@@ -7,8 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -47,24 +45,28 @@ fun SelectWordScreen(navHostController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
+            .fillMaxSize()
             .background(color = Color.White)
             .safeDrawingPadding()
     ) {
-        HeaderLessonsProgress(1) { navHostController.navigate(AppRouterName.Home.name) }
-        Text(
-            text = "Select the correct image for the word:",
-            color = Color.Black,
-            fontSize = 25.sp,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(top = 15.dp)
-        )
         Column(
+            modifier = Modifier.fillMaxWidth()
+        ) { //header
+            HeaderLessonsProgress(1) { navHostController.navigate(AppRouterName.Home.name) }
+            Text(
+                text = "Select the correct image for the word:",
+                color = Color.Black,
+                fontSize = 25.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 15.dp)
+            )
+        }
+        Column( // center
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(top = 30.dp)
-                .fillMaxSize()
+                .fillMaxWidth()
+                .weight(1f)
                 .clip(
                     RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp)
                 )
@@ -73,17 +75,15 @@ fun SelectWordScreen(navHostController: NavHostController) {
                     contentScale = ContentScale.FillBounds
                 )
         ) {
-            Column(
-                modifier = Modifier.height(50.dp)
-            ) {
-                Text(
-                    "BALL",
-                    fontSize = 38.sp,
-                    fontWeight = FontWeight.Light,
-                    color = Color.White,
-                    modifier = Modifier.padding(top = 10.dp)
-                )
-            }
+
+            Text(
+                "BALL",
+                fontSize = 38.sp,
+                fontWeight = FontWeight.Light,
+                color = Color.White,
+                modifier = Modifier.padding(top = 10.dp).height(50.dp)
+            )
+
 
             val data = remember {
                 mutableListOf(
@@ -102,9 +102,6 @@ fun SelectWordScreen(navHostController: NavHostController) {
                 )
             }
 
-            val columns = 2
-            val rows = (data.size + columns - 1) / columns
-
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround,
@@ -113,40 +110,33 @@ fun SelectWordScreen(navHostController: NavHostController) {
                     .weight(1f)
                     .padding(start = 10.dp, end = 10.dp)
             ) {
-                for (rowIndex in 0 until rows) {
+                data.chunked(2).forEach { rowsImage ->
                     Row(
-                        modifier = Modifier.fillMaxWidth().weight(1f),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                        modifier = Modifier.weight(1f),
                     ) {
-                        for (columnIndex in 0 until columns) {
-                            val itemIndex = rowIndex * columns + columnIndex
-                            if (itemIndex < data.size) {
-                                val item = data[itemIndex]
-                                Card(
-                                    modifier = Modifier
-                                        .padding(4.dp)
-                                        .weight(1f)
-                                        .aspectRatio(1f)
-                                        .border(
-                                            width = if (item.second.value) 5.dp else 0.dp,
-                                            color = if (item.second.value) ColorsDefaults.backgroundLightHighContrast else Color.Transparent,
-                                            shape = RoundedCornerShape(3.dp)
-                                        )
-                                        .clickable {
-                                            item.second.value = !item.second.value
-                                            data.forEach {
-                                                if (it.first != item.first) it.second.value = false
-                                            }
-                                        },
-                                    backgroundColor = Color.LightGray.copy(alpha = 0.5f)
-                                ) {
-                                    AsyncImage(
-                                        model = item.first,
-                                        contentDescription = "Image",
+                        rowsImage.forEach { item ->
+                            Card(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight()
+                                    .padding(4.dp)
+                                    .border(
+                                        width = if (item.second.value) 5.dp else 0.dp,
+                                        color = if (item.second.value) ColorsDefaults.backgroundLightHighContrast else Color.Transparent,
+                                        shape = RoundedCornerShape(3.dp)
                                     )
-                                }
-                            } else {
-                                Spacer(modifier = Modifier.weight(1f))
+                                    .clickable {
+                                        item.second.value = !item.second.value
+                                        data.forEach {
+                                            if (it.first != item.first) it.second.value = false
+                                        }
+                                    },
+                                backgroundColor = Color.LightGray.copy(alpha = 0.5f)
+                            ) {
+                                AsyncImage(
+                                    model = item.first,
+                                    contentDescription = "Image",
+                                )
                             }
                         }
                     }
@@ -156,7 +146,7 @@ fun SelectWordScreen(navHostController: NavHostController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(100.dp)
-                    .padding(bottom = 5.dp),
+                    .padding(bottom = 30.dp),
                 verticalArrangement = Arrangement.Bottom
             ) {
                 Button(
