@@ -49,7 +49,7 @@ import kotlin.math.sin
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun WriteWordScreen(navHostController: NavHostController) {
-    val word = "ball"
+    val word = "window"
     var letters = List((12 - word.length)) { ('A'..'Z').random() }
     letters = (letters + word.toList()).shuffled()
     Column(
@@ -75,7 +75,7 @@ fun WriteWordScreen(navHostController: NavHostController) {
             verticalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
                 .padding(top = 30.dp)
-                .fillMaxHeight()
+                .weight(1f)
                 .fillMaxWidth()
                 .clip(
                     RoundedCornerShape(
@@ -91,7 +91,7 @@ fun WriteWordScreen(navHostController: NavHostController) {
         ) {
             AsyncImage(
                 model = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/25d45014-8cc3-4c98-b02c-5a0cf3a55ddd/dcgoypr-bb7aa4ed-2b44-414b-9042-e878a8542738.png/v1/fill/w_989,h_808/soccer_ball_on_a_transparent_background__by_prussiaart_dcgoypr-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9ODM2IiwicGF0aCI6IlwvZlwvMjVkNDUwMTQtOGNjMy00Yzk4LWIwMmMtNWEwY2YzYTU1ZGRkXC9kY2dveXByLWJiN2FhNGVkLTJiNDQtNDE0Yi05MDQyLWU4NzhhODU0MjczOC5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.f5wVeyksvXP-TgMFs1oQNOLU0_it1GMYklAjGKQEXYk",
-                contentDescription = "BALL",
+                contentDescription = "Window",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(150.dp)
@@ -111,7 +111,7 @@ fun WriteWordScreen(navHostController: NavHostController) {
                         Card(
                             modifier = Modifier
                                 .padding(4.dp)
-                                .height(60.dp)
+                                .fillMaxHeight()
                                 .align(Alignment.CenterVertically),
                             backgroundColor = Color.LightGray.copy(alpha = 0.5f)
                         ) {
@@ -128,20 +128,25 @@ fun WriteWordScreen(navHostController: NavHostController) {
                     }
                 }
             }
-            FlowRow(
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 50.dp)
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(-(40).dp),
-                horizontalArrangement = Arrangement.spacedBy(-(7).dp)
+                    .weight(1f)
+                    .padding(30.dp)
             ) {
-                letters.forEachIndexed { position, letter ->
-                    val padding = if (position % 2 == 0) 30.dp else 0.dp
-                    RoundedPolygonBox(
-                        letter.toString().uppercase(),
-                        modifier = Modifier.padding(top = padding)
-                    )
+                FlowRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    horizontalArrangement = Arrangement.spacedBy(-(7).dp)
+                ) {
+                    letters.forEachIndexed { position, letter ->
+                        RoundedPolygonBox(
+                            letter.toString().uppercase(),
+                            modifier = Modifier.align(Alignment.CenterVertically).weight(1f)
+                        )
+                    }
                 }
             }
             Column(
