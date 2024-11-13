@@ -93,8 +93,8 @@ fun App(navController: NavHostController = rememberNavController()) {
                         title = "Perfil"
                     )
                 }
-            ) { innerPadding ->
-                ProfileScreen(sharedProfileViewModel, modifier = Modifier.padding(innerPadding))
+            ) {
+                ProfileScreen(sharedProfileViewModel)
             }
         }
         composable(AppRouterName.NewWordScreen.name) {
