@@ -47,7 +47,7 @@ fun NewWordScreen(navHostController: NavHostController) {
     ) {
         HeaderLessonsProgress(0) { navHostController.navigate(AppRouterName.Home.name) }
         Text(
-            "You will learn the new word...",
+            "Now, you will learn the new word...",
             textAlign = TextAlign.Center,
             fontSize = 29.sp,
             modifier = Modifier.padding(top = 15.dp)
@@ -56,7 +56,7 @@ fun NewWordScreen(navHostController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .padding(top = 30.dp)
-                .fillMaxHeight()
+                .weight(1f)
                 .fillMaxWidth()
                 .clip(
                     RoundedCornerShape(
