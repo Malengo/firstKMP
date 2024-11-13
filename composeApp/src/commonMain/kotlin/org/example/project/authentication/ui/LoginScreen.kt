@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
@@ -47,6 +48,7 @@ fun LoginScreen(
     var textChoiseForm by remember { mutableStateOf("Criar uma nova conta") }
     val openDialog = remember { mutableStateOf(false) }
     var messageError by remember { mutableStateOf("") }
+    val isLoading = remember { mutableStateOf(false) }
 
     if (openDialog.value) {
         DialogError(messageError, openDialog)
@@ -81,7 +83,9 @@ fun LoginScreen(
         Button(
             modifier = Modifier.padding(all = 10.dp).fillMaxWidth().height(50.dp),
             colors = ButtonDefaults.buttonColors(ColorsDefaults.primaryLight),
+            enabled = !isLoading.value,
             onClick = {
+                isLoading.value = true
                 scope.launch {
                     //val response = if (formState.isLogin) viewModel.handleLoginFirebase() else viewModel.handlersingUpFireBase()
                     val response = viewModel.handleLoginFirebase()
@@ -95,7 +99,15 @@ fun LoginScreen(
                 }
             }
         ) {
-            Text(buttonLoginFormText, color = ColorsDefaults.onPrimaryLight)
+            if (isLoading.value) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    strokeWidth = 2.dp,
+                    color = ColorsDefaults.primaryDark
+                )
+            } else {
+                Text(buttonLoginFormText, color = ColorsDefaults.onPrimaryLight)
+            }
         }
         ClickableText(
             modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 10.dp),

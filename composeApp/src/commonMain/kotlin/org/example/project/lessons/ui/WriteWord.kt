@@ -94,7 +94,7 @@ fun WriteWordScreen(navHostController: NavHostController) {
                 contentDescription = "BALL",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(100.dp)
                     .align(Alignment.CenterHorizontally)
             )
             Row(

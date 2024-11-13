@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -43,7 +44,7 @@ import org.example.project.components.DialogError
 import org.example.project.sharedViewModel.SharedProfileViewModel
 
 @Composable
-fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modifier) {
+fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel) {
     var selectedImage by remember { mutableStateOf<Any?>(null) }
     val imagePicker = rememberImagePicker()
     val scope = rememberCoroutineScope()
@@ -111,7 +112,9 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
             }
         }
         TextField(
-            modifier = Modifier.padding(all = 10.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(all = 10.dp)
+                .fillMaxWidth(),
             value = profileState.displayName ?: "",
             onValueChange = sharedProfileViewModel::onDisplayNameChanged,
             label = {
@@ -119,7 +122,9 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
             }
         )
         TextField(
-            modifier = Modifier.padding(all = 10.dp).fillMaxWidth(),
+            modifier = Modifier
+                .padding(all = 10.dp)
+                .fillMaxWidth(),
             value = profileState.email,
             onValueChange = sharedProfileViewModel::onEmailChanged,
             label = {
@@ -127,7 +132,11 @@ fun ProfileScreen(sharedProfileViewModel: SharedProfileViewModel, modifier: Modi
             }
         )
         Button(
-            modifier = Modifier.padding(all = 10.dp).fillMaxWidth().height(50.dp),
+            modifier = Modifier
+                .padding(all = 10.dp)
+                .fillMaxWidth()
+                .height(50.dp),
+            colors = ButtonDefaults.buttonColors(ColorsDefaults.primaryLight),
             onClick = {
                 scope.launch {
                     sharedProfileViewModel.handlerUpdateProfileFireBase()
