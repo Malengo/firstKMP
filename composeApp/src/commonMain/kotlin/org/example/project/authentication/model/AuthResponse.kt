@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AuthResponse(
-    val displayName: String? = "",
+    val displayName: String?,
     val idToken: String,
     val email: String,
-    val profilePicture:String
+    val profilePicture:String? = ""
 )

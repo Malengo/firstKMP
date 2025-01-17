@@ -1,13 +1,18 @@
 package org.example.project.authentication.repository
 
+import com.google.firebase.Firebase
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpHeaders.Authorization
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
@@ -18,6 +23,7 @@ import org.example.project.authentication.model.ErrorResquestEnum
 import org.example.project.authentication.model.UpdateProfileRequest
 
 class FirebaseService {
+    val db = Firebase.firestore
     private val httpClient = HttpClient() {
         install(ContentNegotiation) {
             json(Json {
@@ -25,9 +31,9 @@ class FirebaseService {
             })
         }
     }
-    private val API_KEY = "AIzaSyDuqNTZzIZYszch2V1653Pm19EBU33XRa4"
+    private val API_KEY = "AIzaSyD5awyMlXDuMEsVAFANqIk8du6Hj_OYuf4"
 
-    suspend fun signUp(email: String, password: String): AuthResponse? {
+    suspend fun signUp(email: String, password: String): Result<AuthResponse> {
 
         val responseBody =
             httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}") {
@@ -36,15 +42,17 @@ class FirebaseService {
             }
 
         return if (responseBody.status.value in 200..299) {
-            responseBody.body<AuthResponse>()
+            Result.success(responseBody.body<AuthResponse>())
         } else {
-            null
+            val responseError = responseBody.body<AuthResponseError>()
+            val erroMessage: ErrorResquestEnum? = ErrorResquestEnum.fromCode(responseError.error.code)
+            Result.failure(Exception(erroMessage?.message))
         }
     }
 
     suspend fun login(email: String, password: String): Result<AuthResponse> {
         val response =
-            httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}") {
+            httpClient.post("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}&returnSecureToken=true") {
                 contentType(ContentType.Application.Json)
                 setBody(AuthRequest(email, password))
             }
@@ -75,7 +83,7 @@ class FirebaseService {
         fileName: String,
         idToken: String? = null
     ): String? {
-        val bucketName = "firstkmp-f9053.appspot.com"
+        val bucketName = "englishapp-8fd93.firebasestorage.app"
         val filePath = "imagens/${fileName}"
         val firebaseUrl =
             "https://firebasestorage.googleapis.com/v0/b/$bucketName/o?name=${filePath}"
@@ -114,6 +122,22 @@ class FirebaseService {
                 else -> "%${char.code.toString(16).uppercase()}"
             }
         }.joinToString("")
+    }
+
+    suspend fun getAllLessons(idToken: String) {
+        val url = "https://firestore.googleapis.com/v1/projects/englishapp-8fd93/databases/(default)/documents/lessons/"
+
+        try {
+            val response = httpClient.get(url) {
+                header(HttpHeaders.Authorization, "Bearer $idToken")
+            }
+            println("Resposta: ${response.bodyAsText()}")
+        } catch (e: ClientRequestException) {
+            println("Erro de Cliente: ${e.response.status}")
+            println("Mensagem: ${e.response.bodyAsText()}")
+        } catch (e: Exception) {
+            println("Erro Geral: ${e.message}")
+        }
     }
 
 }

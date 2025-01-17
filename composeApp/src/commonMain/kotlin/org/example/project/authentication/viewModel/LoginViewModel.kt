@@ -27,23 +27,31 @@ class LoginViewModel : ViewModel() {
         _formState.value = _formState.value.copy(isLogin = newChoise)
     }
 
-    suspend fun handlersingUpFireBase(): Profile? {
-        val authResponse = auth.signUp("jose.malengo@hotmail.com", "123456")
-        if (authResponse != null) {
-            val profile = Profile(
-                authResponse.displayName,
-                authResponse.email,
-                authResponse.idToken,
-                authResponse.profilePicture
+    suspend fun handlersingUpFireBase(): Result<Profile> {
+        return try {
+            val authResponse = auth.signUp(_formState.value.email, _formState.value.password)
+            authResponse.fold(
+                onSuccess = { auth: AuthResponse ->
+                    val profile = Profile(
+                        auth.displayName,
+                        auth.email,
+                        auth.idToken,
+                        auth.profilePicture
+                    )
+                    Result.success(profile)
+                },
+                onFailure = { exception ->
+                    Result.failure(Exception(exception.message))
+                }
             )
-            return profile
+        } catch (e: Exception) {
+            Result.failure(e)
         }
-        return null
     }
 
     suspend fun handleLoginFirebase(): Result<Profile> {
         return try {
-            val response = auth.login("jose.malengo@hotmail.com", "123456")
+            val response = auth.login(_formState.value.email, _formState.value.password)
 
             response.fold(
                 onSuccess = { auth: AuthResponse ->

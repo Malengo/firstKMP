@@ -37,6 +37,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,6 +59,7 @@ import coil3.request.ImageRequest
 import firstkmp.composeapp.generated.resources.Res
 import firstkmp.composeapp.generated.resources.backgroundHome
 import firstkmp.composeapp.generated.resources.goals
+import kotlinx.coroutines.launch
 import org.example.project.AppRouterName
 import org.example.project.homeApp.components.cardLesson
 import org.example.project.sharedViewModel.SharedProfileViewModel
@@ -73,6 +75,7 @@ fun HomeScreen(
     val showDialog = remember { mutableStateOf(false) }
     val profileState by sharedProfileViewModel.profile
     val showLoading = remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     if (showLoading.value) {
         CircularProgressIndicator()
@@ -80,7 +83,7 @@ fun HomeScreen(
 
     LaunchedEffect(Unit) {
         showDialog.value = true
-        sharedProfileViewModel.profile.value.displayName?.let{
+        if (!sharedProfileViewModel.profile.value.displayName?.isEmpty()!!) {
             showDialog.value = false
         }
     }
@@ -247,6 +250,11 @@ fun HomeScreen(
                                 )
                             ),
                             modifier = Modifier.padding(top = 30.dp)
+                                .clickable {
+                                    scope.launch {
+                                        sharedProfileViewModel.getAllLessons()
+                                    }
+                                }
                         )
                         Text(
                             "Discovery name of fruits",

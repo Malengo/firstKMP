@@ -78,6 +78,8 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.mp)
             implementation(libs.coil.network.ktor)
+            implementation(project.dependencies.platform("com.google.firebase:firebase-bom:33.6.0"))
+            implementation(libs.firebase.common.ktx)
         }
         wasmJsMain.dependencies {
             implementation("io.ktor:ktor-client-js:3.0.0-wasm2")
@@ -127,6 +129,7 @@ android {
 dependencies {
     implementation(libs.androidx.material3.android)
     implementation(libs.androidx.appcompat)
+    implementation(libs.firebase.common.ktx)
 }
 
 

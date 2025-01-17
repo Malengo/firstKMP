@@ -87,8 +87,7 @@ fun LoginScreen(
             onClick = {
                 isLoading.value = true
                 scope.launch {
-                    //val response = if (formState.isLogin) viewModel.handleLoginFirebase() else viewModel.handlersingUpFireBase()
-                    val response = viewModel.handleLoginFirebase()
+                    val response = if (formState.isLogin) viewModel.handleLoginFirebase() else viewModel.handlersingUpFireBase()
                     response.onSuccess { profile ->
                         sharedProfileViewModel.addProfile(profile)
                         onNavigateToHomeScreen()

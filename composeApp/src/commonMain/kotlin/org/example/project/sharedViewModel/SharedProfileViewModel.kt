@@ -40,4 +40,8 @@ class SharedProfileViewModel: ViewModel() {
         _firebaseService.update(updateProfileRequest)
     }
 
+    suspend fun getAllLessons() {
+        _firebaseService.getAllLessons(profile.value.idToken)
+    }
+
 }
